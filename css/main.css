@@ -8,8 +8,31 @@ body {
 }
 
 .cell {
-    /* background-color: black; */
     font-size: 1.2em;
-    width: 2em;
-    height: 2em;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.modal {
+    background-color: rgb(65, 4, 4);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 5px;
+    width: 300px;
+    transform: translate(-50%, -50%);
+}
+
+.hide {
+    display: none;
+}
+
+.modal button {
+    background-color: white;
+    border-radius: 7px;
+}
+
+.modal button:hover {
+    cursor: pointer;
+    background-color: light rgb(116, 61, 7);
 }

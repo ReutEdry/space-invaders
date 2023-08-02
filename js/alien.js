@@ -2,6 +2,7 @@
 
 const ALIEN_SPEED = 500
 var gIntervalAliens
+var gAliensPoses = []
 
 // The following two variables represent the part of the matrix (some rows)
 // that we should shift (left, right, and bottom)
@@ -12,10 +13,11 @@ var gAliensBottomRowIdx
 var gIsAlienFreeze = true
 
 function createAliens(board) {
+    var rowStart = 9
     for (var j = 4; j < 9; j++) {
-        board[0][j] = createCell(ALIEN)
+        board[rowStart][j] = createCell(ALIEN)
+        gAliensPoses.push({ i: rowStart, j: j })
     }
-
 }
 
 function handleAlienHit(pos) {

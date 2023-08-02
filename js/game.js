@@ -13,11 +13,11 @@ const SKY = 'SKY'
 var gBoard
 var gGame = {
     isOn: false,
-    alienCount: 0
+    alienCount: 0,
+    score: 0
 }
 
 
-// Called when game loads
 function onInit() {
     gBoard = createBoard(BOARD_SIZE)
     createHero(gBoard)
@@ -25,6 +25,12 @@ function onInit() {
     renderBoard(gBoard)
 
     gGame.isOn = true
+    gGame.score = 0
+    updateScore(0)
+
+    const elModal = document.querySelector('.modal')
+    elModal.classList.add('hide')
+
     console.log(gBoard)
 }
 
@@ -65,7 +71,6 @@ function renderBoard(board) {
     elTable.innerHTML = strHtml
 }
 
-
 function createCell(gameObject = null) {
     return {
         type: SKY,
@@ -73,8 +78,18 @@ function createCell(gameObject = null) {
     }
 }
 
+function updateScore(diff) {
+    // update model
+    gGame.score += diff
+    // update dom
+    document.querySelector('.alien-score span').innerText = gGame.score
+}
 
-// position such as: {i: 2, j: 7}
+function onOpenModal() {
+    const elModal = document.querySelector('.modal')
+    elModal.classList.remove('hide')
+}
+
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
     var elCell = getElCell(pos)

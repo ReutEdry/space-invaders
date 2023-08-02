@@ -1,6 +1,8 @@
 'use strict'
 const LASER_SPEED = 80
 var gHero
+var gInterval
+var gLaserPos
 
 function createHero(board) {
     gHero = {
@@ -13,30 +15,29 @@ function createHero(board) {
     board[gHero.pos.i][gHero.pos.j] = createCell(HERO)
 }
 
-// Handle game keys
-function onHandleKey(keyEvent) {
+function onHandleKey(event) {
 
     const nexLocation = {
         i: gHero.pos.i,
         j: gHero.pos.j
     }
 
-    switch (keyEvent) {
+    switch (event.key) {
         case 'ArrowRight':
             nexLocation.j++
             break;
         case 'ArrowLeft':
             nexLocation.j--
     }
+
+    if (event.code === 'Space') shoot()
+
     return nexLocation
 }
 
-// Move the hero right (1) or left (-1)
 function moveHero(dir) {
-
     if (!gGame.isOn) return
-
-    const nexLocation = onHandleKey(dir.key)
+    const nexLocation = onHandleKey(dir)
 
     if (nexLocation.j < 0 ||
         nexLocation.j > gBoard[0].length - 1) return console.log('out of border')
@@ -56,12 +57,51 @@ function moveHero(dir) {
     updateCell(gHero.pos, HERO)
 }
 
-// Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot() {
-
+    if (gHero.isShoot === true) return console.log('bye')
+    gHero.isShoot = true
+    const i = gHero.pos.i
+    const j = gHero.pos.j
+    gLaserPos = {
+        i: i,
+        j: j
+    }
+    setBlinkLaser()
 }
 
-// renders a LASER at specific cell for short time and removes it
 function blinkLaser(pos) {
+    updateCell(pos, LASER)
 
+    setTimeout(() => {
+        updateCell(pos)
+    }, 500);
+}
+
+function setBlinkLaser() {
+    gInterval = setInterval(() => {
+        --gLaserPos.i
+        stopInterval(gLaserPos)
+        blinkLaser(gLaserPos)
+    }, 1000);
+}
+
+function stopInterval() {
+    if (gLaserPos.i === 0 || alienHit()) {
+        gHero.isShoot = false
+        clearInterval(gInterval)
+    }
+}
+
+function alienHit() {
+    for (var i = 0; i < gAliensPoses.length; i++) {
+        var currAlien = gAliensPoses[i]
+        if (gLaserPos.i === currAlien.i &&
+            gLaserPos.j === currAlien.j) {
+            gAliensPoses.splice(i, 1)
+            updateScore(10)
+            if (!gAliensPoses.length) onOpenModal()
+            return true
+        }
+    }
+    return false
 }
