@@ -9,6 +9,7 @@ const ALIEN = '👽'
 const LASER = '⤊'
 const GROUND = '🧱'
 const SKY = 'SKY'
+const SPACE_CANDIES = '🍔'
 
 var gBoard
 var gGame = {
@@ -16,6 +17,7 @@ var gGame = {
     alienCount: 0,
     score: 0
 }
+var gCandyInterval
 
 
 function onInit() {
@@ -24,9 +26,13 @@ function onInit() {
     createAliens(gBoard)
     renderBoard(gBoard)
 
-    gGame.isOn = true
+    // gGame.isOn = true
     gGame.score = 0
     updateScore(0)
+    gLaserPos
+
+    // gIntervalAliens = setInterval(shiftBoardDown, 1000, gBoard)
+    gCandyInterval = setInterval(addSpaceCandy, 10000)
 
     const elModal = document.querySelector('.modal')
     elModal.classList.add('hide')
@@ -85,9 +91,15 @@ function updateScore(diff) {
     document.querySelector('.alien-score span').innerText = gGame.score
 }
 
-function onOpenModal() {
+function onOpenModal(msg) {
+    const elModalMsg = document.querySelector('.modal h2')
+    elModalMsg.innerText = msg
+
     const elModal = document.querySelector('.modal')
     elModal.classList.remove('hide')
+    gGame.isOn = false
+    clearInterval(gCandyInterval)
+    clearInterval(gIntervalAliens)
 }
 
 function updateCell(pos, gameObject = null) {
@@ -99,3 +111,25 @@ function updateCell(pos, gameObject = null) {
 function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`)
 }
+
+function onStartBtnClick() {
+    gGame.isOn = true
+}
+
+function addSpaceCandy() {
+    if (!gGame.isOn) return
+    var emptyPos = getEmptyCell(gBoard)
+    if (!emptyPos) return
+
+    // model
+    gBoard[emptyPos.i][emptyPos.j] = createCell(SPACE_CANDIES)
+    //dom
+    updateCell(emptyPos, SPACE_CANDIES)
+
+    setTimeout(() => {
+        if (gBoard[emptyPos.i][emptyPos.j].gameObject === HERO) return
+        gBoard[emptyPos.i][emptyPos.j] = createCell()
+        updateCell(emptyPos)
+    }, 3000);
+}
+
