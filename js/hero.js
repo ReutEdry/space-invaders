@@ -76,7 +76,7 @@ function shoot() {
         i: i,
         j: j
     }
-    playAudio()
+    playLaserAudio()
     setBlinkLaser()
 }
 
@@ -120,6 +120,7 @@ function laserHit() {
 }
 
 function blowUpNegs() {
+    playExplositionAudio()
     for (var i = gHeroLaserPos.i - 1; i <= gHeroLaserPos.i + 1; i++) {
         if (i < 0 || i > gBoard.length - 1) continue
         for (var j = gHeroLaserPos.j - 1; j <= gHeroLaserPos.j + 1; j++) {
@@ -147,10 +148,4 @@ function removeBlowedAliens(iIdx, jIdx) {
         }
     }
     // console.log(gAliensPoses)
-}
-
-
-function playAudio() {
-    var audio = new Audio('audio/blaster.mp3')
-    audio.play()
 }

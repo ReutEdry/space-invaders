@@ -16,15 +16,21 @@ function createAliens(board) {
         board[gAliensTopRowIdx][j] = createCell(ALIEN)
         gAliensPoses.push({ i: gAliensTopRowIdx, j: j })
     }
+    // console.log(gAliensPoses)
 }
 
 /// second attempt
 
 function moveAliens() {
     if (!gGame.isOn) return
+    // console.log(gAliensPoses)
     for (var i = 0; i < gAliensPoses.length; i++) {
         const alien = gAliensPoses[i]
         // moveAlienRight(alien)
+        if (alien.i === gHero.pos.i) {
+            onOpenModal('YOU DEAD ☠️')
+            return
+        } 
         moveAlienDown(alien)
     }
 }
@@ -48,11 +54,8 @@ function moveAliens() {
 // }
 
 function moveAlienDown(alien) {
-    console.log('hey from down')
-    if (alien.i === gHero.pos.i) {
-        alert('YOU LOSER ☠️')
-        return
-    }
+    
+    if(alien.i !== gHero.pos.i) {
     // curr location
     var currLocation = alien
     gBoard[currLocation.i][currLocation.j] = createCell()
@@ -62,6 +65,7 @@ function moveAlienDown(alien) {
     gBoard[alien.i][alien.j] = createCell(ALIEN)
     updateCell(alien, ALIEN)
     // moveAlienLeft(alien)
+    }
 }
 
 // function moveAlienLeft(alien) {

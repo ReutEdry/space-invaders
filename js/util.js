@@ -19,4 +19,12 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
+function playLaserAudio() {
+    var audio = new Audio('audio/blaster.mp3')
+    audio.play()
+}
 
+function playExplositionAudio() {
+    var audio = new Audio('audio/explosition.mp3')
+    audio.play()
+}

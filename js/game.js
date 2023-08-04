@@ -9,7 +9,7 @@ const ALIEN = '👾'
 const LASER = '⤊'
 const GROUND = '🪨'
 const SKY = 'SKY'
-const SPACE_CANDIES = '🍔'
+const SPACE_CANDIES = ''
 
 var gBoard
 var gGame = {
@@ -88,15 +88,6 @@ function updateScore(diff) {
     document.querySelector('.alien-score span').innerText = gGame.score
 }
 
-function onOpenModal(msg) {
-    const elModalMsg = document.querySelector('.modal h2')
-    elModalMsg.innerText = msg
-
-    const elModal = document.querySelector('.modal')
-    elModal.classList.remove('hide')
-    endGame()
-}
-
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
     var elCell = getElCell(pos)
@@ -128,8 +119,28 @@ function addSpaceCandy() {
     }, 3000);
 }
 
+function onOpenModal(msg) {
+    const elModalMsg = document.querySelector('.modal h2')
+    elModalMsg.innerText = msg
+
+    const elModal = document.querySelector('.modal')
+    elModal.classList.remove('hide')
+    endGame()
+}
+
 function endGame() {
     gGame.isOn = false
+    gAliensPoses = []
     clearInterval(gIntervalAliens)
     clearInterval(gCandyInterval)
+    clearInterval(gLaserInterval)
+}
+
+function onRestart() {
+    gGame.isOn = false
+    gAliensPoses = []
+    clearInterval(gIntervalAliens)
+    clearInterval(gCandyInterval)
+    clearInterval(gLaserInterval)
+    onInit()
 }
