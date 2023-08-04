@@ -5,9 +5,9 @@ const ALIEN_ROW_LENGTH = 8
 const ALIEN_ROW_COUNT = 3
 
 const HERO = '🤖'
-const ALIEN = '👽'
+const ALIEN = '👾'
 const LASER = '⤊'
-const GROUND = '🧱'
+const GROUND = '🪨'
 const SKY = 'SKY'
 const SPACE_CANDIES = '🍔'
 
@@ -25,19 +25,16 @@ function onInit() {
     createHero(gBoard)
     createAliens(gBoard)
     renderBoard(gBoard)
-
-    // gGame.isOn = true
+    gHeroLaserPos
+    gAliensTopRowIdx = 1
     gGame.score = 0
     updateScore(0)
-    gLaserPos
-
-    // gIntervalAliens = setInterval(shiftBoardDown, 1000, gBoard)
+    gIntervalAliens = setInterval(moveAliens, 3000)
     gCandyInterval = setInterval(addSpaceCandy, 10000)
 
     const elModal = document.querySelector('.modal')
     elModal.classList.add('hide')
 
-    console.log(gBoard)
 }
 
 function createBoard(size) {
@@ -97,9 +94,7 @@ function onOpenModal(msg) {
 
     const elModal = document.querySelector('.modal')
     elModal.classList.remove('hide')
-    gGame.isOn = false
-    clearInterval(gCandyInterval)
-    clearInterval(gIntervalAliens)
+    endGame()
 }
 
 function updateCell(pos, gameObject = null) {
@@ -133,3 +128,8 @@ function addSpaceCandy() {
     }, 3000);
 }
 
+function endGame() {
+    gGame.isOn = false
+    clearInterval(gIntervalAliens)
+    clearInterval(gCandyInterval)
+}

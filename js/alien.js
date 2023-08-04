@@ -6,16 +6,81 @@ var gAliensPoses = []
 var gAliensTopRowIdx
 var gAliensBottomRowIdx = 0
 var gIsAlienFreeze = true
+const firstRightCell = 0
+const lastRightJ = 13
+
 
 function createAliens(board) {
-    var rowStart = 1
+    gAliensTopRowIdx = 1
     for (var j = 3; j < 11; j++) {
-        board[rowStart][j] = createCell(ALIEN)
-        gAliensPoses.push({ i: rowStart, j: j })
+        board[gAliensTopRowIdx][j] = createCell(ALIEN)
+        gAliensPoses.push({ i: gAliensTopRowIdx, j: j })
     }
 }
 
-// attempt to move them to the right
+/// second attempt
+
+function moveAliens() {
+    if (!gGame.isOn) return
+    for (var i = 0; i < gAliensPoses.length; i++) {
+        const alien = gAliensPoses[i]
+        // moveAlienRight(alien)
+        moveAlienDown(alien)
+    }
+}
+
+
+
+// function moveAlienRight(alien) {
+//     console.log('hey from right')
+//     if (alien.j === lastRightJ) {
+//         // moveAlienDown(alien)
+//     }
+//     // curr location
+//     gBoard[alien.i][alien.j] = createCell()
+//     updateCell(alien)
+
+//     // nextlocation
+//     alien.j++
+//     gBoard[alien.i][alien.j] = createCell(ALIEN)
+//     updateCell(alien, ALIEN)
+//     console.log(gBoard)
+// }
+
+function moveAlienDown(alien) {
+    console.log('hey from down')
+    if (alien.i === gHero.pos.i) {
+        alert('YOU LOSER ☠️')
+        return
+    }
+    // curr location
+    var currLocation = alien
+    gBoard[currLocation.i][currLocation.j] = createCell()
+    updateCell(alien)
+    //next location
+    alien.i++
+    gBoard[alien.i][alien.j] = createCell(ALIEN)
+    updateCell(alien, ALIEN)
+    // moveAlienLeft(alien)
+}
+
+// function moveAlienLeft(alien) {
+//     console.log('hey from left')
+//     // curr location
+//     gBoard[alien.i][alien.j] = createCell()
+//     updateCell(alien)
+
+//     // next location
+//     alien.j--
+//     gBoard[alien.i][alien.j] = createCell(ALIEN)
+//     updateCell(alien, ALIEN)
+// }
+
+ 
+
+///////// first attempt
+
+
 // function shiftBoardRight(board, fromI, toI) {
 //     for (var i = fromI; i <= toI; i++) {
 //         for (var j = 0; j < board[i].length - 1; j++) {
@@ -25,9 +90,9 @@ function createAliens(board) {
 //     }
 // }
 
-function shiftBoardLeft(board, fromI, toI) {
+// function shiftBoardLeft(board, fromI, toI) {
 
-}
+// }
 // attempt to move them down - it is workin but has a bug
 // function shiftBoardDown(board) {
 //     if (!gGame.isOn) return

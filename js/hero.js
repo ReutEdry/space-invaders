@@ -2,7 +2,7 @@
 const LASER_SPEED = 80
 var gHero
 var gLaserInterval
-var gLaserPos
+var gHeroLaserPos
 
 function createHero(board) {
     gHero = {
@@ -72,7 +72,7 @@ function shoot() {
     gHero.isShoot = true
     const i = gHero.pos.i
     const j = gHero.pos.j
-    gLaserPos = {
+    gHeroLaserPos = {
         i: i,
         j: j
     }
@@ -91,14 +91,14 @@ function blinkLaser(pos) {
 function setBlinkLaser() {
 
     gLaserInterval = setInterval(() => {
-        --gLaserPos.i
-        stopLaserInterval(gLaserPos)
-        blinkLaser(gLaserPos)
+        --gHeroLaserPos.i
+        stopLaserInterval(gHeroLaserPos)
+        blinkLaser(gHeroLaserPos)
     }, 1000);
 }
 
 function stopLaserInterval() {
-    if (gLaserPos.i === 0 || laserHit()) {
+    if (gHeroLaserPos.i === 0 || laserHit()) {
         gHero.isShoot = false
         clearInterval(gLaserInterval)
     }
@@ -107,22 +107,23 @@ function stopLaserInterval() {
 function laserHit() {
     for (var i = 0; i < gAliensPoses.length; i++) {
         var currAlien = gAliensPoses[i]
-        if (gLaserPos.i === currAlien.i &&
-            gLaserPos.j === currAlien.j) {
+        if (gHeroLaserPos.i === currAlien.i &&
+            gHeroLaserPos.j === currAlien.j) {
             gAliensPoses.splice(i, 1)
             updateScore(10)
             if (!gAliensPoses.length) onOpenModal('YOU DEFETED THE INVADERS 💪🏼🥇')
             return true
         }
     }
+    // console.log(gAliensPoses)
     return false
 }
 
 function blowUpNegs() {
-    for (var i = gLaserPos.i - 1; i <= gLaserPos.i + 1; i++) {
+    for (var i = gHeroLaserPos.i - 1; i <= gHeroLaserPos.i + 1; i++) {
         if (i < 0 || i > gBoard.length - 1) continue
-        for (var j = gLaserPos.j - 1; j <= gLaserPos.j + 1; j++) {
-            if (i === gLaserPos.i && j === gLaserPos.j) continue
+        for (var j = gHeroLaserPos.j - 1; j <= gHeroLaserPos.j + 1; j++) {
+            if (i === gHeroLaserPos.i && j === gHeroLaserPos.j) continue
             if (j < 0 || j > gBoard[0].length - 1) continue
             if (gBoard[i][j].gameObject === ALIEN) {
                 gBoard[i][j] = createCell()
@@ -145,6 +146,7 @@ function removeBlowedAliens(iIdx, jIdx) {
             if (!gAliensPoses.length) onOpenModal('YOU DEFETED THE INVADERS 💪🏼🥇')
         }
     }
+    // console.log(gAliensPoses)
 }
 
 
