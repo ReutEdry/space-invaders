@@ -76,6 +76,7 @@ function shoot() {
         i: i,
         j: j
     }
+
     playLaserAudio()
     setBlinkLaser()
 }
@@ -120,6 +121,7 @@ function laserHit() {
 }
 
 function blowUpNegs() {
+    if (!gHero.isShoot) return
     playExplositionAudio()
     for (var i = gHeroLaserPos.i - 1; i <= gHeroLaserPos.i + 1; i++) {
         if (i < 0 || i > gBoard.length - 1) continue

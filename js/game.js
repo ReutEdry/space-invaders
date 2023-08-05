@@ -9,7 +9,7 @@ const ALIEN = '👾'
 const LASER = '⤊'
 const GROUND = '🪨'
 const SKY = 'SKY'
-const SPACE_CANDIES = ''
+const SPACE_CANDIES = '🥩'
 
 var gBoard
 var gGame = {
@@ -106,7 +106,6 @@ function addSpaceCandy() {
     if (!gGame.isOn) return
     var emptyPos = getEmptyCell(gBoard)
     if (!emptyPos) return
-
     // model
     gBoard[emptyPos.i][emptyPos.j] = createCell(SPACE_CANDIES)
     //dom
@@ -131,16 +130,18 @@ function onOpenModal(msg) {
 function endGame() {
     gGame.isOn = false
     gAliensPoses = []
-    clearInterval(gIntervalAliens)
-    clearInterval(gCandyInterval)
-    clearInterval(gLaserInterval)
+    clearingInterval()
 }
 
 function onRestart() {
     gGame.isOn = false
     gAliensPoses = []
-    clearInterval(gIntervalAliens)
-    clearInterval(gCandyInterval)
-    clearInterval(gLaserInterval)
+    clearingInterval()
     onInit()
+}
+
+function clearingInterval() {
+    clearInterval(gIntervalAliens)
+    clearInterval(gLaserInterval)
+    clearInterval(gCandyInterval)
 }
